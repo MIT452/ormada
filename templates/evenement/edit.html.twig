@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'Événement - ORMada{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto h-[80vh] overflow-hidden flex flex-col pb-2">
+
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-700 mb-2">✏️ Modifier l'Événement</h1>
+        <p class="text-gray-500 text-sm">Mettez à jour les informations de votre événement</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100 flex flex-col flex-1">
+
+        <!-- Form Header -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3">
+            <h2 class="text-lg font-bold text-white">Détails de l'événement</h2>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-5 overflow-y-auto flex-1 text-sm">
+            {{ include('evenement/_form.html.twig', {'button_label': null}) }}
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="bg-gray-50 border-t border-gray-200 px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+
+            <!-- Retour à la liste -->
+            <a href="{{ path('app_evenement_index') }}" class="flex items-center gap-2 text-gray-700 bg-gray-100 hover:bg-gray-200 font-bold py-2 px-4 rounded-xl transition-all">
+                ← Retour à la liste
+            </a>
+
+            <!-- Update + Delete Buttons -->
+            <div class="flex gap-3">
+                <!-- Mettre à jour -->
+                <button type="submit" form="evenement_form" class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-2 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 active:scale-95">
+                    💾 Mettre à jour
+                </button>
+
+                <!-- Supprimer -->
+                {{ include('evenement/_delete_form.html.twig') }}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

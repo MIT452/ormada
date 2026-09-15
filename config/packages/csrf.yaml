@@ -1,0 +1,11 @@
+# CSRF Protection Configuration
+framework:
+    form:
+        csrf_protection:
+            enabled: true
+            field_name: _token
+
+    csrf_protection:
+        enabled: true
+        # Use session-based CSRF tokens (not stateless)
+        # stateless tokens don't work well with modal forms

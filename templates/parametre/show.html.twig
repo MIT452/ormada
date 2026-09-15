@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir paramètre - ORMada{% endblock %}
+
+{% block body %}
+    <div class="max-w-2xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+                <span class="text-4xl">⚙️</span>
+                Paramètre: {{ parametre.cle }}
+            </h1>
+            <p class="text-gray-600">Visualisez et modifiez les détails de ce paramètre</p>
+        </div>
+
+        <!-- Details Card -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border-l-4 border-teal-500 mb-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Identifiant</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800 font-mono">
+                        {{ parametre.id }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Clé</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800">
+                        {{ parametre.cle }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Valeur</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800 break-words">
+                        {{ parametre.valeur }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 flex-wrap">
+            <a href="{{ path('app_parametre_edit', {'id': parametre.id}) }}" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md">
+                <span>✏️</span>
+                <span>Modifier</span>
+            </a>
+            
+            <a href="{{ path('app_parametre_index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors duration-200">
+                <span>←</span>
+                <span>Retour à la liste</span>
+            </a>
+        </div>
+
+        <!-- Delete Section -->
+        <div class="mt-8 pt-8 border-t border-gray-200">
+            {{ include('parametre/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<form method="post" action="{{ path('app_parametre_delete', {'id': parametre.id}) }}" onsubmit="return confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce paramètre ? Cette action est irréversible.');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ parametre.id) }}">
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
+        <div>
+            <p class="text-red-800 font-semibold">Supprimer ce paramètre</p>
+            <p class="text-red-600 text-sm">Cette action est permanente et ne peut pas être annulée.</p>
+        </div>
+        <button type="submit" class="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md">
+            <span class="flex items-center gap-2">
+                <span>🗑️</span>
+                <span>Supprimer</span>
+            </span>
+        </button>
+    </div>
+</form>

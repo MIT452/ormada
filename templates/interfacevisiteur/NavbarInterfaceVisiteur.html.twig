@@ -1,0 +1,239 @@
+<!-- ================= HEADER NAVBAR PRO ================= -->
+<header class="fixed top-0 left-0 w-full  bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600  shadow-2xl z-50">
+
+    <!-- BARRE PRINCIPALE -->
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-6 py-3">
+
+        <!-- LOGO -->
+        <a href="{{ path('app_interfacevisiteur') }}"
+           class="flex items-center gap-3">
+
+            <img src="{{ asset('images/Logo.jpg') }}"
+                 class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md">
+
+            <span class="text-white font-bold text-xl tracking-wide">
+                ORMada
+            </span>
+        </a>
+
+        <!-- MENU DESKTOP -->
+        <nav class="desktop-nav hidden md:flex gap-8 text-white font-semibold">
+
+            <a href="{{ path('app_interfacevisiteur') }}#Accueil"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 focus:text-yellow-300 transition duration-300 focus:outline-none">
+                Accueil 
+            </a>
+
+            <a href="{{ path('app_interfacevisiteur') }}#actualites"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 focus:text-yellow-300 transition duration-300 focus:outline-none">
+               Actualités
+            </a>
+
+            <a href="{{ path('app_interfacevisiteur') }}#evenements"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 hover:font-bold focus:text-yellow-300 transition duration-300 focus:outline-none">
+               Événements
+            </a>
+
+            <a href="{{ path('app_interfacevisiteur') }}#informations"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 hover:font-bold focus:text-yellow-300 transition duration-300 focus:outline-none">
+               Informations
+            </a>
+
+            <a href="{{ path('app_interfacevisiteur') }}#apropos"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 hover:font-bold focus:text-yellow-300 transition duration-300 focus:outline-none">
+               À propos
+            </a>
+
+            <a href="{{ path('app_interfacevisiteur') }}#contacts"
+               data-nav-link="visitor"
+               class="text-white hover:text-yellow-300 hover:font-bold focus:text-yellow-300 transition duration-300 focus:outline-none">
+               Contacts
+            </a>
+
+        </nav>
+
+        <!-- BOUTON MOBILE -->
+        <button onclick="toggleMobileMenu()"
+                class="md:hidden text-white text-3xl hover:text-yellow-300 transition">
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+<!-- ================= BACKDROP ================= -->
+<div id="backdrop"
+     class="hidden fixed inset-0 bg-black/50 z-40"
+     onclick="closeMobileMenu()">
+</div>
+
+<!-- ================= MENU MOBILE ================= -->
+<div id="mobileMenu"
+     class="fixed top-0 left-0 w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600  shadow-2xl shadow-2xl z-50
+            transform -translate-y-full transition-transform duration-500 ease-out rounded-b-3xl">
+
+    <!-- TOP -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-white/20">
+
+        <a href="{{ path('app_interfacevisiteur') }}"
+           class="flex items-center gap-3">
+
+            <img src="{{ asset('images/Logo.jpg') }}"
+                 class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md">
+
+            <span class="text-white font-bold text-xl tracking-wide">
+                ORMada
+            </span>
+        </a>
+
+        <button onclick="closeMobileMenu()"
+                class="text-white text-3xl hover:text-red-300 transition">
+            ×
+        </button>
+
+    </div>
+
+    <!-- MENU -->
+    <nav class="mobile-nav flex flex-col text-white font-semibold px-6 py- gap-4">
+
+        <a href="{{ path('app_interfacevisiteur') }}#Accueil"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl transition mt-6">
+            📰 Accueil
+        </a>
+        <a href="{{ path('app_interfacevisiteur') }}#actualites"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl transition">
+           📰 Actualités
+        </a>
+
+        <a href="{{ path('app_interfacevisiteur') }}#evenements"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl transition">
+           📅 Événements
+        </a>
+
+        <a href="{{ path('app_interfacevisiteur') }}#informations"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl transition">
+           ℹ️ Informations
+
+        </a>
+
+        <a href="{{ path('app_interfacevisiteur') }}#apropos"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl transition">
+           🏛️ À propos
+        </a>
+
+        <a href="{{ path('app_interfacevisiteur') }}#contacts"
+           data-nav-link="visitor"
+           onclick="closeMobileMenu()"
+           class="text-white hover:text-yellow-300 hover:bg-green-700 px-4 py-3 rounded-xl mb-3 transition">
+           📞 Contacts
+        </a>
+
+    </nav>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('backdrop');
+
+    menu.classList.remove('-translate-y-full');
+    menu.classList.add('translate-y-0');
+
+    backdrop.classList.remove('hidden');
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('backdrop');
+
+    menu.classList.add('-translate-y-full');
+    menu.classList.remove('translate-y-0');
+
+    backdrop.classList.add('hidden');
+
+    document.body.style.overflow = "";
+}
+
+function setActiveVisitorLink(clickedLink) {
+    const links = document.querySelectorAll('a[data-nav-link="visitor"]');
+
+    links.forEach(link => {
+        link.classList.remove('text-yellow-300', 'underline', 'decoration-2', 'decoration-yellow-300', 'underline-offset-2');
+        link.classList.add('text-white');
+    });
+
+    clickedLink.classList.remove('text-white');
+    clickedLink.classList.add('text-yellow-300', 'underline', 'decoration-2', 'decoration-yellow-300', 'underline-offset-2');
+}
+
+function determineVisitorActiveTarget() {
+    const hash = window.location.hash;
+    if (hash) {
+        return hash;
+    }
+
+    const pathname = window.location.pathname.toLowerCase();
+
+    if (pathname.includes('actualit')) {
+        return '#actualites';
+    }
+    if (pathname.includes('evenement')) {
+        return '#evenements';
+    }
+    if (pathname.includes('information')) {
+        return '#informations';
+    }
+    if (pathname.includes('apropos')) {
+        return '#apropos';
+    }
+    if (pathname.includes('contact')) {
+        return '#contacts';
+    }
+
+    return '#Accueil';
+}
+
+function updateActiveVisitorLinkByHash() {
+    const target = determineVisitorActiveTarget();
+    const links = Array.from(document.querySelectorAll('a[data-nav-link="visitor"]'));
+    const matchedLink = links.find(link => new URL(link.href, window.location.href).hash === target);
+
+    if (matchedLink) {
+        setActiveVisitorLink(matchedLink);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const visitorLinks = document.querySelectorAll('a[data-nav-link="visitor"]');
+
+    visitorLinks.forEach(link => {
+        link.addEventListener('click', event => {
+            setActiveVisitorLink(event.currentTarget);
+        });
+    });
+
+    updateActiveVisitorLinkByHash();
+});
+
+window.addEventListener('hashchange', updateActiveVisitorLinkByHash);
+</script>

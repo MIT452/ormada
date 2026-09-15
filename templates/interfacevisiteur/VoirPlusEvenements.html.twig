@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Événements - ORMada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+
+{% include 'interfacevisiteur/NavbarInterfaceVisiteur.html.twig' %}
+
+<div class="max-w-6xl mx-auto px-4 mt-12 py-10">
+
+            <!-- TOP BAR (HEADER + FILTERS) -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
+
+            <!-- HEADER -->
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">
+                    📅 Gestion des événements
+                </h1>
+
+                <p class="text-gray-500 mt-1">
+                    Explorez les événements passés, en cours et à venir. Filtrez facilement selon votre période.
+                </p>
+            </div>
+
+
+                    <!-- FILTER BUTTONS -->
+            <div class="flex flex-wrap gap-3 mb-6">
+
+                <a href="?filter=all"
+                class="px-4 py-2 rounded-xl text-sm font-semibold transition
+                {{ filter == 'all' ? 'bg-emerald-600 text-white shadow' : 'bg-white border text-gray-700 hover:bg-gray-50' }}">
+                    Tous
+                </a>
+
+                <a href="?filter=past"
+                class="px-4 py-2 rounded-xl text-sm font-semibold transition
+                {{ filter == 'past' ? 'bg-emerald-600 text-white shadow' : 'bg-white border text-gray-700 hover:bg-gray-50' }}">
+                    Passés
+                </a>
+
+                <a href="?filter=current"
+                class="px-4 py-2 rounded-xl text-sm font-semibold transition
+                {{ filter == 'current' ? 'bg-emerald-600 text-white shadow' : 'bg-white border text-gray-700 hover:bg-gray-50' }}">
+                    En cours
+                </a>
+
+                <a href="?filter=upcoming"
+                class="px-4 py-2 rounded-xl text-sm font-semibold transition
+                {{ filter == 'upcoming' ? 'bg-emerald-600 text-white shadow' : 'bg-white border text-gray-700 hover:bg-gray-50' }}">
+                    À venir
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- BODY -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {% for evenement in evenements %}
+
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition">
+
+                    <!-- HEADER CARD -->
+
+                      {# IMAGE PRINCIPALE #}
+                    {% set image = evenement.media|first %}
+
+                    {% if image %}
+                        <img src="{{ asset(image.chemindufichier) }}"
+                             class="h-48 w-full object-cover"
+                             alt="{{ evenement.titre }}">
+                    {% else %}
+                        <img src="{{ asset('images/default.jpg') }}"
+                             class="h-48 w-full object-cover"
+                             alt="default">
+                    {% endif %}
+                    <div class="bg-emerald-600 text-white px-4 py-3 font-bold">
+                        {{ evenement.titre }}
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="p-5 space-y-3">
+
+                        <!-- DESCRIPTION -->
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            {{ evenement.description|length > 120 
+                                ? evenement.description|slice(0, 120) ~ '...' 
+                                : evenement.description }}
+                        </p>
+
+                        <!-- DATES -->
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+
+                            <span>
+                                📅 {{ evenement.datedudebut ? evenement.datedudebut|date('d/m/Y') : 'N/A' }}
+                            </span>
+
+                            <span>
+                                ⏳ {{ evenement.datedufin ? evenement.datedufin|date('d/m/Y') : 'N/A' }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="col-span-full text-center text-gray-500 py-10">
+                    Aucun événement trouvé
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+</div>
+
+</body>
+</html>

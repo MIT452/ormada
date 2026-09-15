@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Actualité - ORMada{% endblock %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto h-full flex flex-col pb-2">
+
+    <!-- HEADER -->
+    <div class="mb-5">
+
+        <div class="bg-white rounded-3xl shadow-lg border border-emerald-100 overflow-hidden">
+
+            <!-- Bandeau -->
+            <div class="h-2 bg-gradient-to-r from-emerald-700 via-emerald-500 to-teal-400"></div>
+
+            <div class="px-8 py-6 flex items-center justify-between">
+
+                <div>
+
+                    <div class="flex items-center gap-4">
+
+                        <div class="w-14 h-14
+                                    rounded-2xl
+                                    bg-emerald-100
+                                    flex items-center justify-center
+                                    shadow-sm">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="w-7 h-7 text-emerald-700"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="text-3xl font-bold text-gray-800">
+
+                                Nouvelle Actualité
+
+                            </h1>
+
+                            <p class="text-gray-500 text-sm mt-1">
+
+                                Créez et publiez une nouvelle actualité pour ORMada
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM CARD -->
+    <div class="bg-white
+                rounded-3xl
+                shadow-xl
+                border border-emerald-100
+                overflow-hidden
+                flex flex-col
+                flex-1">
+
+        <!-- HEADER CARD -->
+        <div class="bg-gradient-to-r
+                    from-emerald-800
+                    via-emerald-700
+                    to-emerald-600
+                    px-8 py-4
+                    flex items-center justify-between">
+
+            <div>
+
+                <h2 class="text-white text-lg font-bold">
+
+                    Détails de l'actualité
+
+                </h2>
+
+                <p class="text-emerald-100 text-sm">
+
+                    Remplissez les informations nécessaires
+
+                </p>
+
+            </div>
+
+            <div class="w-10 h-10
+                        rounded-xl
+                        bg-white/20
+                        flex items-center justify-center">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-5 h-5 text-white"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"/>
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM CONTENT -->
+        {# <div class="flex-1 overflow-y-auto p-8 bg-gray-50"> #}
+        <div class="p-6 flex-1 mb-5 bg-gray-50 overflow-y-auto">
+            <div class="bg-white
+                        rounded-2xl
+                        p-6
+                        border border-gray-100
+                        shadow-sm">
+
+                {{ include('actualite/_form.html.twig') }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

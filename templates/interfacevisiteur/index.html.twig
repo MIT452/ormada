@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ORMada - Organisation pour la gestion et la valorisation du patrimoine culturel de Madagascar">
+    <meta name="keywords" content="patrimoine, Madagascar, culture, Rova, ORMada">
+    <title>ORMada - Patrimoine Malagasy</title>
+    
+    {# Tailwind CSS #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    {# Styles personnalisés #}
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body{
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Titres principaux */
+        h1, h2{
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sous-titres */
+        h3, h4, h5{
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 scroll-auto min-h-screen flex flex-col">
+
+{# HEADER / NAVBAR #}
+{% include 'interfacevisiteur/NavbarInterfaceVisiteur.html.twig' %}
+
+{# MAIN CONTENT #}
+<main>
+
+{# Affichage des messages flash #}
+{% for type, messages in app.flashes %}
+    {% if type == 'success' %}
+    <div class="bg-green-50 border-l-4 border-green-600 p-4 m-4 rounded" role="alert">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">
+                    {% for message in messages %}
+                        {{ message }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% elseif type == 'error' %}
+    <div class="bg-red-50 border-l-4 border-red-600 p-4 m-4 rounded" role="alert">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">
+                    {% for message in messages %}
+                        {{ message }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
+{# SECTION HERO #}
+<section id="Accueil" class="min-h-screen  bg-center flex items-center justify-center text-center px-4 mt-16" style="background-image:url('images/fondRova.jpg')">
+    <div class="p-6 md:p-10 rounded-lg text-white w-full max-w-2xl fade-in">
+        <p class="text-sm md:text-base mb-3 opacity-90">
+            Pour la gestion et le développement durable du patrimoine de Madagascar
+        </p>
+        <h1 class="text-3xl md:text-5xl font-bold mb-6">
+            Rovan' Madagasikara
+        </h1>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{{ path('app_histoire_du_rova') }}"
+                class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition">
+                <span class="text-lg">🏰</span>
+                <span class="font-medium">Histoire du Rova</span>
+
+            </a>
+     
+            <button onclick="openModal()"
+                    class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition duration-300 font-semibold">
+                    Contactez-nous
+            </button>
+        </div>
+    </div>
+</section>
+
+{# 
+Partie actualités #}
+<section id="actualites" class="py-20 bg-gray-100">
+
+    <div class="max-w-6xl mx-auto px-4">
+
+        <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">
+            Actualités
+        </h2>
+        <p class="text-justify text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+            Restez informés des dernières actualités du site royal d’Antananarivo. 
+            Retrouvez ici les annonces importantes, nouveautés, projets en cours, 
+            communiqués officiels et informations utiles concernant la valorisation 
+            et la préservation de notre patrimoine historique.
+        </p>
+
+        <!-- CARROUSEL -->
+        <div class="relative overflow-hidden rounded-2xl">
+
+            <!-- Slides -->
+            <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
+
+                {% for actualite in actualitesPublier %}
+
+                    <!-- UNE SLIDE = UNE ACTUALITÉ -->
+                    <div class="min-w-full px-1">
+
+                        <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 min-h-[420px]">
+
+                            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+
+                                <!-- ===================== -->
+                                <!-- CONTENU -->
+                                <!-- ===================== -->
+                                <div class="flex flex-col justify-center">
+
+                                    <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 w-fit">
+                                        Actualité
+                                    </span>
+
+                                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                                        {{ actualite.titre }}
+                                    </h3>
+
+                                    <p class="whitespace-pre-line leading-relaxed">
+                                        {{ actualite.contenu|slice(0, 120)~'...' }} 
+                                        <a href="{{ path('app_showActualite', {'id': actualite.id}) }}"
+                                            class="text-gray-600 hover:text-gray-800 font-semibold hover:underline">
+                                            Voir plus 
+                                        </a>   
+                                    </p>
+
+                                </div>
+                                <!-- ===================== -->
+                                <!-- IMAGES -->
+                                <!-- ===================== -->
+                                <div class="grid md:grid-cols-1 gap-6 h-full">
+
+                                    
+                                  
+
+                                        {% set totalImages = actualite.media|length %}
+
+                                        {# ===================== #}
+                                        {# 0 IMAGE #}
+                                        {# ===================== #}
+                                        {% if totalImages == 0 %}
+
+                                            <img src="{{ asset('images/default.jpg') }}"
+                                                class="w-full h-[380px] object-cover rounded-xl shadow">
+
+                                        {# ===================== #}
+                                        {# 1 IMAGE #}
+                                        {# ===================== #}
+                                        {% elseif totalImages == 1 %}
+
+                                            {% set image = actualite.media|first %}
+
+                                            <img src="{{ asset(image.chemindufichier) }}"
+                                                class="w-full h-[380px] object-cover rounded-xl shadow hover:scale-105 transition duration-300">
+                                        {# ===================== #}
+                                        {# 2 IMAGES #}
+                                        {# ===================== #}
+                                        {% elseif totalImages == 2 %}
+
+                                            <div class="grid grid-cols-2 gap-3 h-[380px]">
+
+                                                {% for image in actualite.media|slice(0,2) %}
+                                                    <img src="{{ asset(image.chemindufichier) }}"
+                                                        class="w-full h-full object-cover rounded-xl hover:scale-105 transition duration-300">
+                                                {% endfor %}
+
+                                            </div>
+
+                                        {# ===================== #}
+                                        {# 3+ IMAGES #}
+                                        {# ===================== #}
+                                        {% else %}
+
+                                            <div class="grid grid-cols-2 gap-3 h-[380px]">
+
+                                                <!-- grande image -->
+                                                <div class="row-span-2 overflow-hidden rounded-xl">
+                                                    <img src="{{ asset(actualite.media[0].chemindufichier) }}"
+                                                        class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                                                </div>
+
+                                                <!-- 2e -->
+                                                <img src="{{ asset(actualite.media[1].chemindufichier) }}"
+                                                    class="w-full h-full object-cover rounded-xl hover:scale-105 transition duration-300">
+
+                                                <!-- 3e + overlay -->
+                                                <div class="relative overflow-hidden rounded-xl">
+
+                                                    <img src="{{ asset(actualite.media[2].chemindufichier) }}"
+                                                        class="w-full h-full object-cover hover:scale-105 transition duration-300">
+
+                                                    {% if totalImages > 3 %}
+                                                        <button
+                                                            type="button"
+                                                            onclick="openGallery('gallery{{ actualite.id }}')"
+                                                            class="absolute inset-0 bg-black/60 text-white text-xl font-bold flex items-center justify-center">
+                                                            +{{ totalImages - 3 }}
+                                                        </button>
+                                                    {% endif %}
+
+                                                </div>
+
+                                            </div>
+
+                                        {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="min-w-full text-center py-20 bg-white rounded-2xl shadow">
+                        <p class="text-gray-500 text-lg">
+                            Aucune actualité disponible.
+                        </p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <!-- =============================== -->
+            <!-- BOUTON VOIR PLUS ACTUALITÉS -->
+            <!-- =============================== -->
+            <div class="mt-3 mx-4 flex justify-start">
+
+                <a href="{{ path('app_voir_plus_actualites') }}"
+                class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+
+                    Voir plus d'actualités
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7" />
+
+                    </svg>
+
+                </a>
+
+            </div>
+
+            
+
+            <!-- CONTROLS -->
+            <div class="flex flex-col items-center mt-8 space-y-4">
+
+                <!-- Boutons -->
+                <div class="flex gap-4">
+
+                    <button onclick="prevSlide()"
+                        class="w-10 h-10 rounded-full bg-white shadow hover:bg-gray-200 transition">
+                        ‹
+                    </button>
+
+                    <button onclick="nextSlide()"
+                        class="w-10 h-10 rounded-full bg-white shadow hover:bg-gray-200 transition">
+                        ›
+                    </button>
+
+                </div>
+
+                <!-- Dots dynamiques -->
+                <div id="dots" class="flex gap-2">
+                    {% for actualite in actualitesPublier %}
+                        <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer transition"></span>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+{# SECTION ÉVÉNEMENTS #}
+<section id="evenements" class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-6">
+            Événements
+        </h2>
+
+        <p class="text-justify text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+            Découvrez les événements marquants organisés au sein du site royal d’Antananarivo. 
+            Entre activités culturelles, visites guidées, expositions et animations éducatives, 
+            chaque rendez-vous est une occasion unique de valoriser notre patrimoine historique 
+            et de partager des moments enrichissants avec le public.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+
+            {% for evenement in evenements %}
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+
+                    {# IMAGE PRINCIPALE #}
+                    {% set image = evenement.media|first %}
+
+                    {% if image %}
+                        <img src="{{ asset(image.chemindufichier) }}"
+                             class="h-48 w-full object-cover"
+                             alt="{{ evenement.titre }}">
+                    {% else %}
+                        <img src="{{ asset('images/default.jpg') }}"
+                             class="h-48 w-full object-cover"
+                             alt="default">
+                    {% endif %}
+
+                    <div class="p-5">
+
+                        <span class="text-sm text-green-600 font-semibold">
+                           Du {{ evenement.datedudebut|date('d/m/Y') }}
+                        </span>
+                        <span class="text-sm text-green-600 font-semibold">
+                           au {{ evenement.datedufin|date('d/m/Y') }}
+                        </span>
+
+
+                        <h3 class="font-bold text-xl mb-2 mt-1">
+                            {{ evenement.titre }}
+                        </h3>
+
+                        <p class="text-gray-600 mb-4">
+                            {{ evenement.description|slice(0,120) }}...
+                        </p>
+
+                        <a href="{{ path('app_showevenement', {'id': evenement.id}) }}"
+                           class="text-green-600 font-semibold hover:underline">
+                            Voir plus →
+                        </a>
+
+                    </div>
+                </div>
+
+            {% else %}
+
+                <p class="text-center text-gray-500 col-span-3">
+                    Aucun événement disponible.
+                </p>
+
+            {% endfor %}
+
+        </div>
+          <!-- =============================== -->
+        <!-- BOUTON VOIR PLUS ÉVÉNEMENTS -->
+        <!-- =============================== -->
+        <div class="mt-10 mx-4 flex justify-start">
+
+            <a href="{{ path('app_voir_plus_evenements') }}"
+            class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+
+                Voir plus d'événements
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7" />
+
+                </svg>
+
+            </a>
+
+        </div>
+    </div>
+
+  
+</section>
+
+{# SECTION INFORMATIONS #}
+<section id="informations" class="py-16 md:py-20 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 md:mb-16">
+            Informations
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div class="max-w-4xl mx-auto space-y-8">
+
+                <!-- ======================= -->
+                <!-- BLOC CULTURE ET FADY -->
+                <!-- ======================= -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
+
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl">
+                            🏛️
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">
+                                Cultures et fady
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Rovan'i Madagasikara
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        Le Rovan’i Madagasikara n’est pas seulement un site historique, 
+                        mais aussi un lieu profondément ancré dans les traditions et croyances malgaches.
+                        Pour préserver son caractère sacré et respecter la mémoire des souverains, 
+                        certaines règles culturelles appelées <strong>fady</strong> doivent être respectées 
+                        par tous les visiteurs.
+                    </p>
+
+                    <button onclick="openFadyModal()"
+                       class="mt-5 inline-flex items-center justify-center
+                            border border-emerald-700
+                            text-emerald-700
+                            hover:bg-emerald-600 hover:text-white
+                            px-6 py-2 rounded-2xl
+                            font-semibold tracking-wide
+                            shadow-md hover:shadow-xl
+                            transition duration-300
+                            hover:-translate-y-1 active:scale-15">
+                        En savoir plus...
+                    </button>
+
+                </div>
+
+
+                <!-- ======================= -->
+                <!-- BLOC HORAIRES -->
+                <!-- ======================= -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
+
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl">
+                            🕒
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">
+                                Horaires de visite
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                Rovan'ny Manjakamiadana
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+
+                        <div class="flex justify-between items-center bg-gray-50 rounded-xl px-4 py-3">
+                            <span class="text-gray-600 font-medium">Jours d'ouverture</span>
+                            <span class="font-semibold text-green-600">Mercredi - Lundi</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-50 rounded-xl px-4 py-3">
+                            <span class="text-gray-600 font-medium">Ouverture</span>
+                            <span class="font-semibold text-blue-600">09h00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-50 rounded-xl px-4 py-3">
+                            <span class="text-gray-600 font-medium">Fermeture</span>
+                            <span class="font-semibold text-red-500">17h00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-red-50 rounded-xl px-4 py-3">
+                            <span class="text-gray-600 font-medium">Jour fermé</span>
+                            <span class="font-semibold text-red-600">Mardi</span>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-5 text-sm text-gray-500 text-center border-t pt-4">
+                        Les horaires peuvent changer selon les jours fériés ou événements spéciaux.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        {# Modal qui affiche tous les fady liés au Rova de Manjakamiadana #}
+                
+                {# Modal qui affiche tous les fady liés au Rova de Manjakamiadana #}
+
+        <div id="fadyModal"
+            class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 overflow-y-auto">
+
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative
+            max-h-[90vh] overflow-y-auto no-scrollbar">
+
+                <!-- HEADER -->
+                <div class="sticky top-0 bg-white z-10 border-b border-gray-200 px-6 py-5 rounded-t-2xl flex items-center justify-between">
+
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                        Les Fady du Rova d'Antananarivo
+                    </h2>
+
+                    <button onclick="closeFadyModal()"
+                        class="text-gray-600 hover:text-red-600 text-2xl font-bold transition">
+                        ✖
+                    </button>
+
+                </div>
+
+                <!-- CONTENT -->
+                <div class="p-6 md:p-8">
+
+                    <div class="flex gap-3 mb-[20px] text-justify">
+
+                        <span class="text-red-600 text-xl shrink-0">🚫</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            Il est interdit de pointer du doigt les tombes royales ou les palais. 
+                            Ce geste est considéré comme irrespectueux envers les ancêtres et les souverains 
+                            qui reposent sur le site. Il est préférable d’indiquer avec la main ouverte par respect.
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3 mb-[20px]">
+
+                        <span class="text-red-600 text-xl shrink-0">📷</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            La prise de photos peut être interdite dans certaines zones sacrées du Rova. 
+                            Ces restrictions visent à préserver le caractère spirituel et la dignité des lieux. 
+                            Il est recommandé de toujours demander l’autorisation avant de photographier.
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3 mb-[20px]">
+
+                        <span class="text-red-600 text-xl shrink-0">🕊</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            Les tombes des rois et reines sont des lieux sacrés. Les visiteurs doivent éviter 
+                            de marcher ou de s’asseoir à proximité de ces espaces et adopter une attitude respectueuse, 
+                            car ils sont considérés comme des lieux de mémoire et de recueillement.
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3 mb-[20px]">
+
+                        <span class="text-red-600 text-xl shrink-0">🙏</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            Un comportement respectueux est exigé sur l’ensemble du site. Cela inclut une tenue correcte, 
+                            une attitude calme et le respect des consignes données par les guides ou les responsables du Rova.
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3 mb-[20px]">
+
+                        <span class="text-red-600 text-xl shrink-0">🍽</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            Certains aliments peuvent être interdits selon les traditions locales (fady). 
+                            Ces interdits varient selon les croyances et les coutumes. Il est conseillé 
+                            de se renseigner auprès des guides pour éviter toute offense culturelle.
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <span class="text-red-600 text-xl shrink-0">🤫</span>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            Le silence et le calme sont fortement recommandés dans les zones sacrées. 
+                            Faire du bruit ou perturber l’environnement peut être perçu comme un manque de respect 
+                            envers les ancêtres et l’importance spirituelle du lieu.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <style>
+
+            /* Cache la scrollbar mais garde le scroll */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+        </style>
+       
+
+        
+{#      Inforamtion sur les tarifs d'entrée du Rova de Manjakamiadana #}
+            
+            <div class="max-w-4xl mx-auto ">
+    
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+
+                    <!-- Bandeau décoratif -->
+                    <div class="h-1.5 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400"></div>
+
+                    <div class="p-6 md:p-7">
+
+                        <!-- HEADER -->
+                        <div class="text-center mb-6">
+
+                            <div class="inline-flex items-center justify-center w-14 h-14 bg-emerald-100 rounded-full mb-3 shadow-sm">
+                                <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                            </div>
+
+                            <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                                Tarifs d'entrée au Rova 
+                            </h3>
+
+                            <div class="w-16 h-1 bg-emerald-500 mx-auto rounded-full mb-3"></div>
+
+                            <p class="text-gray-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+                                Les tarifs varient selon la nationalité, l'âge et le type de visite.
+                                Une réduction est accordée aux groupes de 5 personnes ou plus.
+                            </p>
+
+                        </div>
+
+                        
+                        <!-- BLOCS -->
+                        <div class="space-y-4">
+
+                            <!-- VISITE COMPLETE -->
+                            <div class="border border-emerald-200 rounded-xl overflow-hidden shadow-sm">
+
+                                <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 px-5 py-2.5">
+                                    <h3 class="text-base md:text-lg font-bold text-white">
+                                        🏚️ VISITE COMPLÈTE
+                                    </h3>
+                                </div>
+
+                                <div class="p-5 bg-white space-y-5">
+
+                                    <!-- Malagasy -->
+                                    <div class="pb-4 border-b border-gray-100">
+
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span>🇲🇬</span>
+                                            <p class="font-semibold text-gray-800">Malagasy et Résident</p>
+                                        </div>
+
+                                        <div class="space-y-2 ml-6 text-sm">
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">Moins de 15 ans :</span>
+                                                <span class="font-bold text-emerald-700">5 000 Ar</span>
+                                            </div>
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">15 ans et plus :</span>
+                                                <span class="font-bold text-emerald-700">10 000 Ar</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Etranger -->
+                                    <div>
+
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span>🌍</span>
+                                            <p class="font-semibold text-gray-800">Étranger non résident</p>
+                                        </div>
+
+                                        <div class="space-y-2 ml-6 text-sm">
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">Moins de 15 ans :</span>
+                                                <span class="font-bold text-emerald-700">20 000 Ar</span>
+                                            </div>
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">15 ans et plus :</span>
+                                                <span class="font-bold text-emerald-700">40 000 Ar</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- VISITE PARTIELLE -->
+                            <div class="border border-emerald-200 rounded-xl overflow-hidden shadow-sm">
+
+                                <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 px-5 py-2.5">
+                                    <h3 class="text-base md:text-lg font-bold text-white">
+                                        👑 VISITE PARTIELLE
+                                        <span class="text-xs md:text-sm font-normal">(Palais Manjakamiadana)</span>
+                                    </h3>
+                                </div>
+
+                                <div class="p-5 bg-white space-y-5">
+
+                                    <!-- Malagasy -->
+                                    <div class="pb-4 border-b border-gray-100">
+
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span>🇲🇬</span>
+                                            <p class="font-semibold text-gray-800">Malagasy et Résident</p>
+                                        </div>
+
+                                        <div class="space-y-2 ml-6 text-sm">
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">Moins de 15 ans :</span>
+                                                <span class="font-bold text-emerald-700">2 000 Ar</span>
+                                            </div>
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">15 ans et plus :</span>
+                                                <span class="font-bold text-emerald-700">5 000 Ar</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Etranger -->
+                                    <div>
+
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span>🌍</span>
+                                            <p class="font-semibold text-gray-800">Étranger non résident</p>
+                                        </div>
+
+                                        <div class="space-y-2 ml-6 text-sm">
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">Moins de 15 ans :</span>
+                                                <span class="font-bold text-emerald-700">10 000 Ar</span>
+                                            </div>
+
+                                            <div class="flex justify-between gap-4">
+                                                <span class="text-gray-600">15 ans et plus :</span>
+                                                <span class="font-bold text-emerald-700">20 000 Ar</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div class="mt-5 pt-4 border-t border-gray-100 text-center text-sm text-gray-500">
+                            Réduction automatique pour les groupes de 5 personnes ou plus.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+{# SECTION À PROPOS #}
+<section id="apropos" class="py-16 md:py-24" style="background: var(--bg-secondary, #f9fafb);">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <div class="text-center mb-14">
+            <p class="text-xs font-medium tracking-widest uppercase mb-2" style="color:#9a6b3c;">Qui sommes-nous</p>
+            <h2 class="font-bold text-center mb-4" style="font-family:'Cormorant Garamond',serif; font-size:2.4rem; color:#111; line-height:1.2;">
+                À propos de l'ORMada
+            </h2>
+            <div class="mx-auto mb-4" style="width:48px; height:3px; background:#1a6641; border-radius:2px;"></div>
+            <p class="text-md font-light text-gray-500 max-w-xl mx-auto leading-relaxed">
+                L'Ofisin'ny Rovan'i Madagasikara (ORMada) est l'institution nationale dédiée à la
+                gestion, la conservation et la valorisation du Rovan'i Madagasikara — joyau du patrimoine culturel malgache.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+                {#
+            {{-- Carte 1 : Qui sommes-nous --}} #}
+            <div class="bg-white rounded-2xl p-7 relative overflow-hidden hover-lift transition"
+                 style="border: 0.5px solid #e5e5e5; border-top: 3px solid #1a6641;">
+                <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5"
+                     style="background:#eaf5ee;">🏛️</div>
+                <h3 class="font-bold text-lg mb-3" >
+                    Qui sommes-nous ?
+                </h3>
+                <p class="text-gray-500 text-md leading-relaxed font-light mb-4">
+                    L'ORMada est un établissement public national à caractère industriel et commercial,
+                    créé par décret n°2021-580 du 26 mai 2021, placé sous la tutelle du ministère de la
+                    Communication et de la Culture. Il gère exclusivement le site du Rovan'i Madagasikara à Antananarivo.
+                </p>
+                <span class="inline-flex items-center gap-1 text-xs text-gray-500 px-3 py-1 rounded-lg"
+                      style="background:#f5f5f5;">
+                    <strong class="text-gray-800">Décret</strong> 26 mai 2021
+                </span>
+            </div>
+
+            {# {{-- Carte 2 : Histoire --}} #}
+            <div class="bg-white rounded-2xl p-7 relative overflow-hidden hover-lift transition"
+                 style="border: 0.5px solid #e5e5e5; border-top: 3px solid #9a6b3c;">
+                <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5"
+                     style="background:#fdf3e3;">📜</div>
+                <h3 class="font-bold text-lg mb-3" >
+                    Histoire de l'ORMada
+                </h3>
+                <p class="text-gray-500 text-md leading-relaxed font-light mb-5">
+                    Après l'incendie tragique de 1995 et 28 ans de travaux de restauration,
+                    le Rovan'i Madagasikara a rouvert ses portes le 18 juin 2023. Depuis, plus de
+                    150 692 visiteurs ont redécouvert ce symbole de la royauté malgache, abritant
+                    des collections des 23 régions de Madagascar.
+                </p>
+                <button class="bg-black text-white text-sm px-5 py-2 rounded-lg hover:bg-gray-800 transition">
+                    En savoir plus →
+                </button>
+            </div>
+
+            {# {{-- Carte 3 : Missions --}} #}
+            <div class="bg-white rounded-2xl p-7 relative overflow-hidden hover-lift transition"
+                 style="border: 0.5px solid #e5e5e5; border-top: 3px solid #2d4e8a;">
+                <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5"
+                     style="background:#eef2fb;">🎯</div>
+                <h3 class="font-bold text-lg mb-3" >
+                    Nos Missions et Visions
+                </h3>
+                <p class="text-gray-500 text-md leading-relaxed font-light mb-4">
+                    Assurer la protection, la conservation, l'entretien, la restauration et la valorisation
+                    du site du Rovan'i Madagasikara. Transmettre le patrimoine matériel et immatériel malgache
+                    aux générations futures et le rayonner à l'échelle internationale.
+                </p>
+                <span class="inline-flex items-center gap-1 text-xs text-gray-500 px-3 py-1 rounded-lg"
+                      style="background:#f5f5f5;">
+                    <strong class="text-gray-800">+150 692</strong> visiteurs accueillis
+                </span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+</main>
+
+{# FOOTER #}
+<footer id="contacts" class="bg-[#4b0000] text-white py-12 md:py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8 md:gap-10">
+            <div>
+                <h3 class="text-green-400 font-bold text-lg mb-4">
+                    Navigation rapide
+                </h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-green-400 transition">Accueil</a></li>
+                    <li><a href="#apropos" class="hover:text-green-400 transition">À propos</a></li>
+                    <li><a href="#actualites" class="hover:text-green-400 transition">Actualités</a></li>
+                    <li><a href="#evenements" class="hover:text-green-400 transition">Événements</a></li>
+                    <li><a href="#contacts" class="hover:text-green-400 transition">Contacts</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-blue-400 font-bold text-lg mb-4">
+                    Informations de contact
+                </h3>
+                <p class="mb-2">Antananarivo, Madagascar</p>
+                {% for parametre in parametres %} 
+                    <p class="mb-2">{{ parametre.valeur }}</p>
+                {% endfor %}
+            </div>
+            
+            <div>
+                <h3 class="font-bold text-lg mb-4">
+                    Réseaux sociaux
+                </h3>
+                    <a href="https://www.facebook.com/p/Rovani-Madagasikara-100094032774345"
+                        target="_blank"
+                        class="flex items-center gap-2 text-blue-400 mb-3 hover:text-blue-500 transition">
+
+                            <!-- Icône Facebook -->
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22 12a10 10 0 10-11.5 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.4 3.3-3.4.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0022 12z"/>
+                            </svg>
+
+                            <span>Facebook</span>
+                        </a>
+                <button onclick="openModal()"
+                        class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition duration-300 font-semibold">
+                    Contactez-nous
+                </button>
+            </div>
+        </div>
+        
+        <p class="text-center mt-10 pt-6 border-t border-red-800 text-sm">
+            © 2026 ORMada. Tous droits réservés
+        </p>
+    </div>
+</footer>
+
+{# MODAL DE CONTACT #}
+<div id="contactModal" 
+     class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4"
+     onclick="if(event.target===this) closeModal()">
+    
+    <div class="bg-white rounded-xl p-6 md:p-8 w-full max-w-md max-h-106 overflow-y-auto">
+        <h2 class="text-2xl text-center font-bold mb-6 text-gray-800">
+            Contactez-nous
+        </h2>
+        
+        <!-- Formulaire AJAX pour éviter les problèmes CSRF -->
+        <form id="contactFormAjax" class="space-y-6">
+            
+            <!-- Champ NOM -->
+            <div class="form-group">
+                <label for="contact_nom" class="block text-sm font-semibold text-gray-700 mb-2">Nom</label>
+                <input type="text" id="contact_nom" name="nom" placeholder="Votre nom" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+                       required>
+                <div class="text-red-500 text-xs mt-1 error-nom"></div>
+            </div>
+
+            <!-- Champ EMAIL -->
+            <div class="form-group">
+                <label for="contact_email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                <input type="email" id="contact_email" name="email" placeholder="votre.email@example.com" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+                       required>
+                <div class="text-red-500 text-xs mt-1 error-email"></div>
+            </div>
+
+            <!-- Champ TITRE -->
+            <div class="form-group">
+                <label for="contact_titre" class="block text-sm font-semibold text-gray-700 mb-2">Titre/Sujet</label>
+                <input type="text" id="contact_titre" name="titre" placeholder="Sujet de votre message" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+                       required>
+                <div class="text-red-500 text-xs mt-1 error-titre"></div>
+            </div>
+
+            <!-- Champ DESCRIPTION -->
+            <div class="form-group">
+                <label for="contact_description" class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                <textarea id="contact_description" name="description" placeholder="Votre message" rows="4"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" 
+                          required></textarea>
+                <div class="text-red-500 text-xs mt-1 error-description"></div>
+            </div>
+
+            <!-- Erreur générale -->
+            <div id="contact_error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"></div>
+
+            <!-- BOUTONS -->
+            <div class="flex justify-between pt-6 border-t gap-3">
+                <button type="button" onclick="closeModal()"
+                   class="text-gray-600 hover:text-gray-900 text-sm px-5 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition">
+                    ← Annuler
+                </button>
+
+                <button type="submit" id="submitBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white text-sm px-5 py-2 rounded-md transition">
+                    Envoyer
+                </button>
+            </div>
+
+        </form>
+            
+    </div>
+</div>
+
+
+{# SCRIPTS #}
+<script>
+// Gestion de la modal
+function openModal() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    resetContactForm();
+}
+
+function closeModal() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+function resetContactForm() {
+    const form = document.getElementById('contactFormAjax');
+    if (form) {
+        form.reset();
+    }
+    // Réinitialiser les messages d'erreur
+    document.getElementById('contact_error').classList.add('hidden');
+    document.querySelectorAll('[class^="error-"]').forEach(el => el.textContent = '');
+}
+
+// Soumission du formulaire de contact en AJAX
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactFormAjax');
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+            
+            // Récupérer les données du formulaire
+            const formData = {
+                nom: document.getElementById('contact_nom').value,
+                email: document.getElementById('contact_email').value,
+                titre: document.getElementById('contact_titre').value,
+                description: document.getElementById('contact_description').value
+            };
+
+            try {
+                const response = await fetch('{{ path("api_contact_submit") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Afficher le message de succès
+                    showSuccessMessage('Votre message a bien été envoyé !');
+                    resetContactForm();
+                    setTimeout(() => closeModal(), 1500);
+                } else {
+                    showErrorMessage(result.error || 'Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                showErrorMessage('Erreur réseau: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+    }
+});
+
+function showSuccessMessage(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'fixed top-4 right-4 bg-green-50 border-l-4 border-green-600 p-4 rounded shadow-lg z-50 max-w-sm';
+    alertDiv.innerHTML = `
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">${message}</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+
+function showErrorMessage(message) {
+    const errorDiv = document.getElementById('contact_error');
+    errorDiv.textContent = message;
+    errorDiv.classList.remove('hidden');
+}
+
+// Fermer la modal avec la touche Echap
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('contactModal');
+        if (!modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const carousel = document.getElementById("carousel");
+
+    if (!carousel) return;
+
+    const slides = carousel.children;
+    const totalSlides = slides.length;
+
+    if (totalSlides === 0) return;
+
+    const dots = document.querySelectorAll("#dots .dot");
+
+    let currentIndex = 0;
+    let autoSlide;
+
+    function updateCarousel() {
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        dots.forEach((dot, index) => {
+            dot.classList.remove("bg-blue-600", "scale-125");
+            dot.classList.add("bg-gray-400");
+
+            if (index === currentIndex) {
+                dot.classList.remove("bg-gray-400");
+                dot.classList.add("bg-blue-600", "scale-125");
+            }
+        });
+    }
+
+    window.nextSlide = function () {
+        currentIndex++;
+
+        if (currentIndex >= totalSlides) {
+            currentIndex = 0;
+        }
+
+        updateCarousel();
+        restartAutoSlide();
+    };
+
+    window.prevSlide = function () {
+        currentIndex--;
+
+        if (currentIndex < 0) {
+            currentIndex = totalSlides - 1;
+        }
+
+        updateCarousel();
+        restartAutoSlide();
+    };
+
+    {# function startAutoSlide() {
+        autoSlide = setInterval(() => {
+            nextSlide();
+        }, 5000);
+    } #}
+
+    function restartAutoSlide() {
+        clearInterval(autoSlide);
+        startAutoSlide();
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+            currentIndex = index;
+            updateCarousel();
+            restartAutoSlide();
+        });
+    });
+
+    let startX = 0;
+    let endX = 0;
+
+    carousel.addEventListener("touchstart", e => {
+        startX = e.changedTouches[0].screenX;
+    });
+
+    carousel.addEventListener("touchend", e => {
+        endX = e.changedTouches[0].screenX;
+
+        if (startX - endX > 50) nextSlide();
+        if (endX - startX > 50) prevSlide();
+    });
+
+    carousel.addEventListener("mouseenter", () => clearInterval(autoSlide));
+    carousel.addEventListener("mouseleave", () => startAutoSlide());
+
+    updateCarousel();
+    startAutoSlide();
+
+});
+
+
+
+// Smooth scroll pour les ancres
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+
+{# affichage du modal pour Fady #}
+function openFadyModal(){
+    document.getElementById("fadyModal").classList.remove("hidden");
+    document.getElementById("fadyModal").classList.add("flex");
+    }
+
+function closeFadyModal(){
+    document.getElementById("fadyModal").classList.remove("flex");
+    document.getElementById("fadyModal").classList.add("hidden");
+}
+
+
+
+</script>
+
+</body>
+</html>

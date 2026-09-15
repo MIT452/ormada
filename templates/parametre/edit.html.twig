@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier paramètre - ORMada{% endblock %}
+
+{% block body %}
+    <div class="max-w-2xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+                <span class="text-4xl">✏️</span>
+                Modifier le paramètre
+            </h1>
+            <p class="text-gray-600">Mettez à jour les informations de ce paramètre</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border-l-4 border-blue-500 mb-8">
+            {{ include('parametre/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        </div>
+
+        <!-- Additional Actions -->
+        <div class="mt-6">
+            <a href="{{ path('app_parametre_index') }}" class="inline-flex items-center gap-2 px-4 py-2 text-teal-600 hover:text-teal-700 hover:bg-teal-50 rounded-lg transition-colors duration-200">
+                <span>←</span>
+                <span>Retour à la liste</span>
+            </a>
+        </div>
+
+        <!-- Delete Section -->
+        <div class="mt-8 pt-8 border-t border-gray-300">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <span>⚠️</span>
+                Zone de danger
+            </h3>
+            {{ include('parametre/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

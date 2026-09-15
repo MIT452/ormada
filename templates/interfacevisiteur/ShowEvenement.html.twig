@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ evenement.titre }} - ORMada</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+
+  <style>
+    body { font-family: 'Jost', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-creme text-gray-800">
+
+<!-- HEADER Navbar -->
+{% include 'interfacevisiteur/NavbarInterfaceVisiteur.html.twig' %}
+
+<main class="max-w-6xl mx-auto px-6 mt-16 py-10">
+
+  <!-- HERO -->
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden grid lg:grid-cols-2">
+
+    <!-- IMAGE -->
+    <div class="relative">
+      {% set image = evenement.media|first %}
+
+      {% if image %}
+        <img src="{{ asset(image.chemindufichier) }}"
+             class="w-full h-full object-cover min-h-[350px]">
+      {% else %}
+        <img src="{{ asset('images/default.jpg') }}"
+             class="w-full h-full object-cover min-h-[350px]">
+      {% endif %}
+
+      <div class="absolute inset-0 bg-gradient-to-t from-emerald-900/40 to-transparent"></div>
+    </div>
+
+    <!-- INFOS -->
+    <div class="p-8 flex flex-col justify-center">
+
+      <span class="bg-emerald-700 text-white px-3 py-1 text-xs rounded-full w-fit mb-4">
+        ÉVÉNEMENT
+      </span>
+
+      <h1 class="text-3xl font-serif font-bold text-emerald-800 mb-6">
+        {{ evenement.titre }}
+      </h1>
+
+      <div class="space-y-4 text-sm">
+
+        <p class="flex items-center gap-2">
+          📅 Du <strong class="text-emerald-700">{{ evenement.datedudebut|date('d/m/Y') }}</strong>
+          au <strong class="text-emerald-700">{{ evenement.datedufin|date('d/m/Y') }}</strong>
+        </p>
+
+        <p class="flex items-center gap-2">
+          📍 Rovan'ny Manjakamiadana
+        </p>
+
+        <p class="flex items-center gap-2">
+          🆔 #{{ evenement.id }}
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="mt-8 bg-white rounded-2xl shadow-lg p-8 border-l-4 border-emerald-700">
+
+    <h2 class="text-xl font-bold text-emerald-800 mb-4">
+      Description complète
+    </h2>
+
+    <p class="whitespace-pre-line leading-7 text-gray-700">
+      {{ evenement.description }}
+    </p>
+
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="mt-8 flex gap-4 flex-wrap">
+
+    <a href="{{ path('app_interfacevisiteur') }}"
+       class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">
+      Retour
+    </a>
+
+    <a href="{{ path('app_interfacevisiteur') }}#evenements"
+       class="border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white px-6 py-3 rounded-lg">
+      Autres événements
+    </a>
+
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="mt-12 text-center py-6 text-sm text-gray-500">
+  ORMada © 2026
+</footer>
+
+</body>
+</html>

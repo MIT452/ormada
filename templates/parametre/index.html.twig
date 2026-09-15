@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres - ORMada{% endblock %}
+
+{% block body %}
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-5xl font-bold text-green-900 mb-2">⚙️ Configuration</h1>
+                    <p class="text-green-700 text-lg">Gérez les paramètres de votre site</p>
+                </div>
+                <a href="{{ path('app_parametre_new') }}" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    ➕ Nouveau Paramètre
+                </a>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-green-100">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-green-800 via-emerald-700 to-teal-700 text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left font-semibold">ID</th>
+                            <th class="px-6 py-4 text-left font-semibold">Clé</th>
+                            <th class="px-6 py-4 text-left font-semibold">Valeur</th>
+                            <th class="px-6 py-4 text-left font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-green-100">
+                    {% for parametre in parametres %}
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <td class="px-6 py-4 font-semibold text-gray-900">#{{ parametre.id }}</td>
+                            <td class="px-6 py-4"><code class="bg-green-100 text-green-900 px-3 py-1 rounded font-mono">{{ parametre.cle }}</code></td>
+                            <td class="px-6 py-4 text-gray-700 max-w-xs truncate">{{ parametre.valeur }}</td>
+                            <td class="px-6 py-4 flex gap-3">
+                                <a href="{{ path('app_parametre_show', {'id': parametre.id}) }}" class="text-green-600 hover:text-green-800 font-semibold hover:underline">👁️ Voir</a>
+                                <a href="{{ path('app_parametre_edit', {'id': parametre.id}) }}" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline">✏️ Éditer</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                <div class="text-6xl mb-4">📭</div>
+                                <p class="text-lg font-semibold">Aucun paramètre trouvé</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

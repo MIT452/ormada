@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs - ORMada{% endblock %}
+
+{% block body %}
+
+<div class="h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-emerald-50 to-white flex flex-col">
+
+    <!-- HEADER -->
+    <section class="shrink-0 bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 shadow-2xl">
+
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+
+            <div>
+
+                <h1 class="text-4xl font-bold text-white">
+                    Gestion des utilisateurs
+                </h1>
+
+                <p class="text-emerald-100 mt-2 text-sm tracking-wide">
+                    Administration ORMada
+                </p>
+
+            </div>
+
+            <form method="get" action="{{ path('app_user_index') }}" class="flex items-center gap-3">
+            
+                <input
+                    id="search"
+                    name="search"
+                    type="search"
+                    value="{{ search|default('') }}"
+                    placeholder="Rechercher un utilisateur"
+                    class="w-full min-w-[240px] rounded-2xl border border-white/25 bg-white-100 px-4 py-3 text-sm text-gray-500 placeholder:text-emerald-200 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                />
+                <button type="submit" class="rounded-2xl bg-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/30 transition duration-200">
+                    Rechercher
+                </button>
+            </form>
+
+            <a href="{{ path('app_user_new') }}"
+               class="inline-flex items-center justify-center gap-1 px-6 py-2 bg-emerald-500 hover:bg-emerald-600 rounded-2xl  text-white font-semibold shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+
+                <span class="text-xl">+</span>
+                <span>Créer un utilisateur</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- CONTENT -->
+    <section class="flex-1 overflow-hidden">
+
+        <div class="max-w-7xl mx-auto h-full px-2 md:px-2 mt-3 pb-4">
+
+    {% if users|length > 0 %}
+
+        <!-- SCROLL ICI UNIQUEMENT -->
+        <div class="h-full overflow-y-auto pr-2">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
+
+                {% for user in users %}
+
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                        <!-- TOP BAR -->
+                        <div class="h-2 bg-gradient-to-r from-emerald-700 via-emerald-500 to-yellow-500"></div>
+
+                        <div class="p-7">
+
+                            <!-- USER INFO -->
+                            <div class="flex items-start gap-4 mb-6">
+
+                                <div class="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                                    {{ user.email|first|upper }}
+                                </div>
+
+                                <div class="flex-1">
+
+                                    <h2 class="text-lg font-bold text-gray-800 break-all">
+                                        {{ user.email }}
+                                    </h2>
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        Utilisateur #{{ user.id }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <!-- ROLES -->
+                            <div class="mb-5">
+
+                                <p class="text-sm font-semibold text-gray-600 mb-3">
+                                    Rôles
+                                </p>
+
+                                <div class="flex flex-wrap gap-2">
+
+                                    {% for role in user.roles %}
+
+                                        {% if role == 'ROLE_ADMIN' %}
+
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold tracking-wide">
+                                                Administrateur
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                            <!-- PASSWORD -->
+                            <div class="mb-6">
+
+                                <p class="text-sm font-semibold text-gray-600 mb-2">
+                                    Mot de passe hashé
+                                </p>
+
+                                <div class="bg-gray-100 rounded-xl p-3 text-xs text-gray-500 break-all border border-gray-200">
+                                    {{ user.password }}
+                                </div>
+
+                            </div>
+
+                            <!-- ACTIONS -->
+                            <div class="grid grid-cols-2 gap-4">
+
+                                 {{ include('user/_delete_form.html.twig') }}
+
+                                <a href="{{ path('app_user_edit', {'id': user.id}) }}"
+                                   class="text-center py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-semibold shadow-md transition duration-300">
+
+                                    Modifier
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="h-full flex items-center justify-center">
+
+            <div class="max-w-xl mx-auto text-center bg-white rounded-3xl shadow-2xl p-12 border border-gray-100">
+
+                <div class="text-7xl mb-5">
+                    👤
+                </div>
+
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    Aucun utilisateur trouvé
+                </h2>
+
+                <p class="text-gray-500 mb-8 leading-relaxed">
+                    Aucun compte administrateur n'est actuellement enregistré.
+                </p>
+
+                <a href="{{ path('app_user_new') }}"
+                   class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold shadow-lg transition duration-300">
+
+                    <span>+</span>
+                    <span>Créer le premier utilisateur</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+    </section>
+
+</div>
+
+{% endblock %}

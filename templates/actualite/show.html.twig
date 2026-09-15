@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir actualité - ORMada{% endblock %}
+
+{% block body %}
+    <div class="max-w-4xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+                <span class="text-4xl">🗣️</span>
+                {{ actualite.titre }}
+            </h1>
+            <p class="text-gray-600 flex items-center gap-2">
+                <span>📅</span>
+                <time datetime="{{ actualite.publierle|date('c') }}">
+                    {% if actualite.publierle %}
+                        Publié le {{ actualite.publierle|date('d/m/Y \à H:i') }}
+                    {% else %}
+                        Non publié
+                    {% endif %}
+                </time>
+            </p>
+        </div>
+
+        <!-- Details Card -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border-l-4 border-emerald-500 mb-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Identifiant</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800 font-mono">
+                        {{ actualite.id }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Titre</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800 font-semibold text-lg">
+                        {{ actualite.titre }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Contenu</label>
+                    <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800 whitespace-pre-wrap break-words leading-relaxed">
+                        {{ actualite.contenu }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Date de publication</label>
+                        <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800">
+                            {% if actualite.publierle %}
+                                {{ actualite.publierle|date('d/m/Y \à H:i') }}
+                            {% else %}
+                                Non spécifiée
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Statut de publication</label>
+                        <div class="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
+                            {% if actualite.dejapublier %}
+                                <span class="inline-block px-3 py-1 bg-green-100 text-green-800 font-semibold rounded-full text-sm">
+                                    ✓ Publiée
+                                </span>
+                            {% else %}
+                                <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 font-semibold rounded-full text-sm">
+                                    ◎ En attente
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 flex-wrap">
+            <a href="{{ path('app_actualite_edit', {'id': actualite.id}) }}" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md">
+                <span>✏️</span>
+                <span>Modifier</span>
+            </a>
+            
+            <a href="{{ path('app_actualite_index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors duration-200">
+                <span>←</span>
+                <span>Retour à la liste</span>
+            </a>
+        </div>
+
+        <!-- Delete Section -->
+        
+    </div>
+{% endblock %}

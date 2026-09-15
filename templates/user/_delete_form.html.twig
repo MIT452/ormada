@@ -1,0 +1,31 @@
+<form 
+    method="post" 
+    action="{{ path('app_user_delete', {'id': user.id}) }}"
+    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');"
+>
+
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('delete' ~ user.id) }}"
+    >
+
+    <button 
+        type="submit"
+        class="w-full inline-flex items-center justify-center gap-2
+               px-5 py-3 rounded-2xl
+               bg-gradient-to-r from-red-600 to-red-500
+               hover:from-red-700 hover:to-red-600
+               text-white font-semibold
+               shadow-lg hover:shadow-2xl
+               transition duration-300
+               hover:-translate-y-1"
+    >
+
+        <span class="text-lg">🗑️</span>
+
+        <span>Supprimer</span>
+
+    </button>
+
+</form>

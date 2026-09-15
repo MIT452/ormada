@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du média{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-100 py-10 px-4">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8">
+
+        <!-- Titre -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+            📷 Détail du média
+        </h1>
+
+        <!-- Image preview -->
+        <div class="flex justify-center mb-8">
+            <img src="{{ medium.chemindufichier }}"
+                 alt="Image"
+                 class="w-64 h-64 object-cover rounded-xl shadow-md border">
+        </div>
+
+        <!-- Infos -->
+        <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">ID</p>
+                <p class="font-semibold">{{ medium.id }}</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">Nom du fichier</p>
+                <p class="font-semibold">{{ medium.nomdufichier }}</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">Type</p>
+                <p class="font-semibold">{{ medium.typedufichier }}</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">Chemin</p>
+                <p class="font-semibold break-all">{{ medium.chemindufichier }}</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
+                <p class="text-sm text-gray-500">Date d'upload</p>
+                <p class="font-semibold">
+                    {{ medium.uploadat ? medium.uploadat|date('d/m/Y à H:i') : '' }}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mt-10">
+
+            <!-- Retour -->
+            <a href="{{ path('app_media_index') }}"
+               class="text-gray-600 hover:text-gray-900 underline transition">
+                ← Retour à la liste
+            </a>
+
+            <div class="flex gap-4">
+
+                <!-- Edit -->
+                <a href="{{ path('app_media_edit', {'id': medium.id}) }}"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow transition">
+                    ✏️ Modifier
+                </a>
+
+                <!-- Delete -->
+                <div>
+                    {{ include('media/_delete_form.html.twig') }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

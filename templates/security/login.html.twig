@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion Admin - ORMada</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emeraldDark: '#064e3b',
+                        emeraldMain: '#047857',
+                        emeraldSoft: '#10b981',
+                        emeraldLight: '#d1fae5',
+                        grenat: '#7f1d1d',
+                        gold: '#d4a017',
+                        cream: '#f8fafc'
+                    },
+
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+
+                    boxShadow: {
+                        soft: '0 10px 40px rgba(0,0,0,0.15)',
+                        glow: '0 0 40px rgba(16,185,129,0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body{
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass{
+            background: rgba(255,255,255,0.90);
+            backdrop-filter: blur(18px);
+        }
+
+        .bg-pattern{
+            background-image:
+                radial-gradient(circle at top left, rgba(16,185,129,0.15), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(127,29,29,0.18), transparent 35%);
+        }
+
+        {# Spinning loading overlay styles #}
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .spinner-ring {
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid rgba(255,255,255,0.25);
+            border-top-color: #34d399;
+            border-radius: 9999px;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-700 flex items-center justify-center px-4 relative overflow-hidden bg-pattern">
+
+    <!-- CONTAINER -->
+    <div class="relative z-10 w-full max-w-md">
+
+        <!-- LOGIN CARD -->
+        <div class="glass rounded-[32px] shadow-soft border border-white/20 overflow-hidden">
+
+            <!-- TOP GRADIENT -->
+            <div class="h-2 bg-gradient-to-r from-emerald-800 via-emerald-500 to-grenat"></div>
+
+            <!-- HEADER -->
+            <div class="relative px-8 pt-10 pb-8 text-center overflow-hidden">
+
+                <!-- Glow -->
+                <div class="absolute top-[-60px] left-1/2 -translate-x-1/2 w-[220px] h-[220px] bg-emerald-400/10 rounded-full blur-3xl"></div>
+
+                <!-- LOGO -->
+                <div class="relative flex justify-center mb-5">
+
+                    <div class="relative">
+
+                        <div class="absolute inset-0 rounded-full bg-emerald-500 blur-xl opacity-30 scale-110"></div>
+
+                        <img 
+                            src="{{ asset('images/Logo.jpg') }}"
+                            alt="ORMada"
+                            class="relative w-28 h-28 rounded-full border-[5px] border-white object-cover shadow-2xl"
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- TITLE -->
+                <h3 class="text-4xl font-serif font-bold text-emerald-900 tracking-wide leading-none">
+                    Connexion
+                </h3>
+
+                <div class="flex items-center justify-center gap-3 mt-4">
+
+                    <div class="w-10 h-[1px] bg-emerald-700/30"></div>
+
+                    <p class="uppercase tracking-[0.25em] text-[11px] text-emerald-800 font-semibold">
+                        Administration sécurisée
+                    </p>
+
+                    <div class="w-10 h-[1px] bg-emerald-700/30"></div>
+
+                </div>
+
+            </div>
+
+            <!-- FORM AREA -->
+            <div class="px-8 md:px-10 pb-10">
+
+                <!-- ERROR -->
+                {% if error %}
+                    <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl text-sm flex items-start gap-3">
+
+                        {# <span class="text-lg"></span> #}
+
+                        <span>
+                            {# {{ error.messageKey|trans(error.messageData, 'security') }} #}
+                           ⚠ Identifiants invalides. Veuillez réessayer.
+                        </span>
+
+                    </div>
+                {% endif %}
+
+                
+        
+
+                <!-- FORM -->
+                <form method="post" class="space-y-6">
+
+                    <!-- EMAIL -->
+                    <div>
+
+                        <label 
+                            for="inputEmail"
+                            class="block mb-2 text-sm font-semibold text-gray-700"
+                        >
+                            Adresse email
+                        </label>
+
+                        <div class="relative">
+
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                ✉
+                            </span>
+
+                            <input
+                                type="email"
+                                value="{{ last_username }}"
+                                name="email"
+                                id="inputEmail"
+                                autocomplete="email"
+                                required
+                                autofocus
+                                placeholder="admin@ormada.mg"
+                                class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition shadow-sm"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div>
+
+                        <label 
+                            for="inputPassword"
+                            class="block mb-2 text-sm font-semibold text-gray-700"
+                        >
+                            Mot de passe
+                        </label>
+
+                        <div class="relative">
+
+                            <input
+                                type="password"
+                                name="password"
+                                id="inputPassword"
+                                autocomplete="current-password"
+                                required
+                                class="w-full px-4 py-3 pr-14 rounded-2xl border border-gray-300 bg-white/90 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition"
+                                placeholder="••••••••"
+                            >
+
+                            <!-- BOUTON OEIL -->
+                            <button
+                                type="button"
+                                onclick="togglePassword()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-emerald-700 transition"
+                            >
+
+                                <!-- OEIL OUVERT -->
+                                <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-6 h-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                            c4.478 0 8.268 2.943 9.542 7
+                                            -1.274 4.057-5.064 7-9.542 7
+                                            -4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+
+                                <!-- OEIL FERMÉ -->
+                                <svg id="eyeClose"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-6 h-6 hidden"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13.875 18.825A10.05 10.05 0 0112 19
+                                            c-4.478 0-8.268-2.943-9.542-7
+                                            a9.956 9.956 0 012.042-3.368M6.223 6.223
+                                            A9.953 9.953 0 0112 5c4.478 0 8.268 2.943
+                                            9.542 7a9.965 9.965 0 01-4.293 5.774M15 12
+                                            a3 3 0 11-6 0 3 3 0 016 0zm6 6L3 3"/>
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CSRF -->
+                    <input
+                        type="hidden"
+                        name="_csrf_token"
+                        data-controller="csrf-protection"
+                        value="{{ csrf_token('authenticate') }}"
+                    >
+
+                    <!-- OPTIONS -->
+                    <div class="flex items-center justify-between text-sm">
+
+                        <label class="flex items-center gap-3 cursor-pointer text-gray-600">
+
+                            <input
+                                type="checkbox"
+                                name="_remember_me"
+                                class="w-4 h-4 rounded border-gray-300 text-emerald-700 focus:ring-emerald-600"
+                            >
+
+                            <span>Se souvenir de moi</span>
+
+                        </label>
+
+                    </div>
+
+                    <!-- BUTTON -->
+                    <button
+                        type="submit"
+                        class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 py-4 text-white font-semibold tracking-wide shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-glow"
+                    >
+
+                        <span class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"></span>
+
+                        <span class="relative flex items-center justify-center gap-2">
+                            <span>Se connecter</span>
+                            <span class="group-hover:translate-x-1 transition">→</span>
+                        </span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mt-7 text-center">
+
+            <p class="text-emerald-100/80 text-xs tracking-[0.18em] uppercase">
+                © 2026 ORMada — Administration
+            </p>
+
+        </div>
+
+    </div>
+
+    <div id="loginLoading" class="loading-overlay hidden">
+        <div class="spinner-ring" aria-hidden="true"></div>
+        <div class="text-center">
+            <p class="font-semibold text-xl">Chargement...</p>
+          
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.querySelector('form');
+        const loginLoading = document.getElementById('loginLoading');
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', function () {
+                if (loginLoading) {
+                    loginLoading.classList.remove('hidden');
+                }
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.classList.add('opacity-70', 'cursor-not-allowed');
+                }
+            });
+        }
+
+        function togglePassword() {
+
+            const passwordInput = document.getElementById('inputPassword');
+
+            const eyeOpen = document.getElementById('eyeOpen');
+            const eyeClose = document.getElementById('eyeClose');
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                eyeOpen.classList.add('hidden');
+                eyeClose.classList.remove('hidden');
+
+            } else {
+
+                passwordInput.type = "password";
+
+                eyeOpen.classList.remove('hidden');
+                eyeClose.classList.add('hidden');
+            }
+        }
+    </script>
+
+
+</body>
+</html>

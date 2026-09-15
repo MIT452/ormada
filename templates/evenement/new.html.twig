@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Événement - ORMada{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto h-[85vh] overflow-hidden flex flex-col pb-2">
+
+    <!-- Header -->
+    <div class="mb-3">
+        <div class="flex items-center justify-between mb-3">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-700 mb-1">📅 Nouvel Événement</h1>
+                <p class="text-gray-500 text-sm">Créez et organisez vos événements pour les visiteurs</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100 flex flex-col flex-1">
+        <!-- Card Header -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3">
+            <h2 class="text-lg font-bold text-white">Informations de l'événement</h2>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-5 overflow-y-auto flex-1 text-sm">
+            {{ include('evenement/_form.html.twig') }}
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-gray-50 border-t border-gray-200 px-6 py-3 flex items-center justify-between flex-shrink-0 text-xs">
+            <p class="text-gray-400">Les champs * sont obligatoires</p>
+            
+        </div>
+    </div>
+
+</div>
+{% endblock %}

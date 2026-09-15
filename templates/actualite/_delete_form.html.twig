@@ -1,0 +1,12 @@
+<form method="post" action="{{ path('app_actualite_delete', {'id': actualite.id}) }}" onsubmit="return confirm('⚠️ Êtes-vous sûr de vouloir supprimer cette actualité ? Cette action est irréversible.');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ actualite.id) }}">
+   
+        
+        <button type="submit" class="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md">
+            <span class="flex items-center gap-2">
+                <span>🗑️</span>
+                <span>Supprimer</span>
+            </span>
+        </button>
+
+</form>
